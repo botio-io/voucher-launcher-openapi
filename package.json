@@ -1,8 +1,8 @@
 {
-  "name": "acme-api",
+  "name": "voucher-launcher",
   "version": "1.0.0",
   "dependencies": {
-    "@redocly/cli": "1.0.0-beta.127"
+    "@redocly/cli": "1.4.1"
   },
   "private": true,
   "scripts": {

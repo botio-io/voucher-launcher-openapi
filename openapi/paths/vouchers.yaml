@@ -128,13 +128,107 @@ post:
                   API call is success or not
               code:
                 type: string
-                enum: ["100143"]
-                description: >-
+                example: "100121"
+                description: |
                   Status code of the API call. 
 
-                  * `100143`: Messaging platform is not supported
+                  | Status Code | Decscriptions |
+                  | ----------- | ------------- |
+                  | 100121      | Subscription is expired |
+                  | 100141      | Invalid recipient type |
+                  | 100142      | recipient ID is empty |
+                  | 100143      | Messaging platform is not supported |
+                  | 100145      | Missing voucher config ID |
+                  | 100146      | Voucher count exceed limits |
+                  | 100147      | Cannot initialize voucher |
+                  | 100152      | Cannot create voucher |
+
               message:
                 type: string
-                example: "Messaging platform is not supported"
+                example: "subscription was expired on Sat, 02 Dec 2023 23:30:00 EST"
+                description: >-
+                  Message explaining API results
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties: 
+              success:
+                type: boolean
+                example: false
+                description: >-
+                  API call is success or not
+              code:
+                type: string
+                example: "100131"
+                description: |
+                  Status code of the API call. 
+
+                  | Status Code | Decscriptions |
+                  | ----------- | ------------- |
+                  | 100131      | No permission |
+
+              message:
+                type: string
+                example: "no permission"
+                description: >-
+                  Message explaining API results
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            type: object
+            properties: 
+              success:
+                type: boolean
+                example: false
+                description: >-
+                  API call is success or not
+              code:
+                type: string
+                example: "100100"
+                description: |
+                  Status code of the API call. 
+
+                  | Status Code | Decscriptions |
+                  | ----------- | ------------- |
+                  | 100100      | Invalid API key |
+                  | 100101      | Missing request signature |
+                  | 100102      | Invalid signature |
+
+              message:
+                type: string
+                example: "invalid API key"
+                description: >-
+                  Message explaining API results
+
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties: 
+              success:
+                type: boolean
+                example: false
+                description: >-
+                  API call is success or not
+              code:
+                type: string
+                example: "100120"
+                description: |
+                  Status code of the API call. 
+
+                  | Status Code | Decscriptions |
+                  | ----------- | ------------- |
+                  | 100120      | Shop not found |
+                  | 100146      | Voucher config is not found |
+              message:
+                type: string
+                example: "shop not found"
                 description: >-
                   Message explaining API results

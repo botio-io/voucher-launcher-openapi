@@ -12,10 +12,42 @@ info:
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   #x-logo:
   #  url: https://redocly.github.io/openapi-template/logo.png
-  description: >
+  description: |
     # Introduction
 
     Voucher Launcher provides a voucher management and delivery service.
+
+    # Signing API Requests
+
+    As part of request verification, every request MUST include a signature of 
+    the request body in the `x-botio-signature` header.
+    
+    The signature is a Base64-encoded digest of the request body. This digest is 
+    generated using the HMAC-SHA256 algorithm, with the API secret serving as the 
+    secret key. The API secret is generated as part of API key and is unique to 
+    the key.
+
+    The following is an example of how to compute signature of the request body.
+
+    ### Go
+
+    ```go Go
+    // Create a new HMAC-SHA256 hash
+    mac := hmac.New(sha256.New, []byte(API_SECRET))
+    mac.Write([]byte(request.Body))                
+    // Compute Base64 signature 
+    signature := base64.StdEncoding.EncodeToString(mac.Sum(nil))
+    ```
+
+    # Rate Limits
+
+    Voucher Launcher API applies the following rate limits for all API endpoints. 
+
+    | Package | Rate Limits |
+    | ------- | ----------- |
+    | Basic   | 1000 requests per month |
+
+    In addition, **the request rate MUST NOT exceed 100 requests per second**.
 tags:
   - name: Voucher
     description: Voucher operations
@@ -26,7 +58,11 @@ paths:
     $ref: paths/vouchers.yaml
 components:
   securitySchemes:
-    API_Key:
+    x-api-key:
       type: apiKey
       in: header
-      name: X-API-Key
+      name: x-api-key
+    x-botio-signature:
+      type: apiKey
+      in: header
+      name: x-botio-signature

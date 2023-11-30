@@ -1,7 +1,7 @@
 post:
   tags:
     - Voucher
-  summary: Create voucher
+  summary: Create vouchers
   description: |
     Generate vouchers and deliver them to a recipient. If no recipient is specified, 
     vouchers will be created but remain undelivered. The delivery method is specified 
@@ -9,9 +9,17 @@ post:
 
     Additionally, if `recipient_email` is set and the email voucher option is enabled in 
     the store settings, emails containing vouchers will be automatically sent to the recipient.
+    
+    ### Supported Messaging Platform
+
+    | Recipient Type | Platform | Descriptions       |
+    | -------------- | -------- | ------------------ |
+    | `botiocrm`     | `line`   | Line messaging API through Botio CRM. Botio CRM service MUST be enable for the store. |                
+
   operationId: createVoucher
   security:
-    - API_Key: []
+    - x-api-key: []
+      x-botio-signature: []
   requestBody:
     content:
       application/json:
@@ -37,16 +45,14 @@ post:
             platform:
               type: string
               enum: ["","line"]
-              description: >-
+              description: |
                 Platform for delivering vouchers to target recipient. The available delivery platforms 
                 are determined by the specified `recipient_type`. If `recipient_type` is not specified, 
                 created vouchers will remain unsent.
-
-                * `line`: Line messaging
             recipient_type:
               type: string
               enum: ["",botiocrm]
-              description: >-
+              description: |
                 Voucher delivery service. Voucher Launcher will use this service to send vouchers to 
                 target recipient via the channel specified by `platform`. 
                 
@@ -97,9 +103,9 @@ post:
                   API call is success or not
               code:
                 type: string
-                example: "000000"
+                enum: ["000000"]
                 description: >-
-                  Status code of the API call. `000000` if success. 
+                  Status code of the API call.
               results:
                 type: object
                 properties: 

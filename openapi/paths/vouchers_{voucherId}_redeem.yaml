@@ -1,0 +1,79 @@
+patch:
+  tags:
+    - Voucher
+  summary: Redeem voucher [UNDER DEVELOPMENT]
+  description: |
+    Redeem a voucher
+  operationId: redeemVoucher
+  security:
+    - x-api-key: []
+      x-botio-signature: []
+  parameters:
+    - name: voucherId
+      in: path
+      description: Voucher ID
+      required: true
+      schema: 
+        type: string    
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          required: 
+            -  redeem
+          properties:
+            redeem:
+              type: boolean
+              description: If `true`, redeem the voucher
+            count:
+              type: integer
+              description: Amount of redemptions.
+            code:
+              type: string
+              description: Code for redeeming the voucher. 
+  responses: 
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties: 
+              success:
+                type: boolean
+                example: true
+                description: >-
+                  API call is success or not
+              code:
+                type: string
+                example: "000000"
+                description: |
+                  Status code of the API call. 
+    '400':
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties: 
+              success:
+                type: boolean
+                example: false
+                description: >-
+                  API call is success or not
+              code:
+                type: string
+                example: "100121"
+                description: |
+                  Status code of the API call. 
+
+                  | Status Code | Decscriptions |
+                  | ----------- | ------------- |
+                  | 100121      | Subscription is expired |
+                  
+              message:
+                type: string
+                example: "subscription was expired on Sat, 02 Dec 2023 23:30:00 EST"
+                description: >-
+                  Message explaining API results

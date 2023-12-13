@@ -1,3 +1,70 @@
+
+get:
+  tags:
+    - Voucher
+  summary: List vouchers
+  description: |
+    Return a paginated list of vouchers in from shop.
+  operationId: listVouchers
+  security:
+    - x-api-key: []
+      x-botio-signature: []
+  responses: 
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties: 
+              success:
+                type: boolean
+                example: true
+                description: >-
+                  API call is success or not
+              code:
+                type: string
+                example: "000000"
+                description: |
+                  Status code of the API call. 
+              results: 
+                type: object
+                properties: 
+                  vouchers:
+                    description: paginated list of vouchers
+                    type: array
+                    items: 
+                      $ref: ../components/voucher.yaml
+                  count:
+                    type: integer
+                    description: total number of vouchers
+    '400':
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties: 
+              success:
+                type: boolean
+                example: false
+                description: >-
+                  API call is success or not
+              code:
+                type: string
+                example: "100121"
+                description: |
+                  Status code of the API call. 
+
+                  | Status Code | Decscriptions |
+                  | ----------- | ------------- |
+                  | 100121      | Subscription is expired |
+
+              message:
+                type: string
+                example: "subscription was expired on Sat, 02 Dec 2023 23:30:00 EST"
+                description: >-
+                  Message explaining API results
 post:
   tags:
     - Voucher
@@ -5,16 +72,11 @@ post:
   description: |
     Generate vouchers and deliver them to a recipient. If no recipient is specified, 
     vouchers will be created but remain undelivered. The delivery method is specified 
-    by `recipient_type` and `platform` (refer to the request body description for details).
+    by shop configuration and a combination of`recipient_type` and `platform` 
+    (refer to the request body description for details).
 
     Additionally, if `recipient_email` is set and the email voucher option is enabled in 
-    the store settings, emails containing vouchers will be automatically sent to the recipient.
-    
-    ### Supported Messaging Platform
-
-    | Recipient Type | Platform | Descriptions       |
-    | -------------- | -------- | ------------------ |
-    | `botiocrm`     | `line`   | Line messaging API through Botio CRM. Botio CRM service MUST be enable for the store. |                
+    the store settings, emails containing vouchers will be automatically sent to the recipient.  
 
   operationId: createVoucher
   security:
@@ -55,6 +117,8 @@ post:
               description: |
                 Voucher delivery service. Voucher Launcher will use this service to send vouchers to 
                 target recipient via the channel specified by `platform`. 
+
+                See. [Supported Messaging Platforms](#tag/Voucher/Supported-Messaging-Platforms) for more detail
                 
                 **Note: Currently, only Botio CRM service is supported**.
             recipient_id:

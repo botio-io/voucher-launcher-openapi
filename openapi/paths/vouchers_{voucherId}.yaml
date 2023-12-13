@@ -1,0 +1,64 @@
+get:
+  tags:
+    - Voucher
+  summary: Get voucher [UNDER DEVELOPMENT]
+  description: |
+    Return an information of a voucher
+  operationId: getVoucher
+  parameters:
+    - name: voucherId
+      in: path
+      description: Voucher ID
+      required: true
+      schema: 
+        type: string
+  security:
+    - x-api-key: []
+      x-botio-signature: []
+  responses: 
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties: 
+              success:
+                type: boolean
+                example: true
+                description: >-
+                  API call is success or not
+              code:
+                type: string
+                example: "000000"
+                description: |
+                  Status code of the API call. 
+              results: 
+                $ref: ../components/voucher.yaml
+    '400':
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties: 
+              success:
+                type: boolean
+                example: false
+                description: >-
+                  API call is success or not
+              code:
+                type: string
+                example: "100121"
+                description: |
+                  Status code of the API call. 
+
+                  | Status Code | Decscriptions |
+                  | ----------- | ------------- |
+                  | 100121      | Subscription is expired |
+                  
+              message:
+                type: string
+                example: "subscription was expired on Sat, 02 Dec 2023 23:30:00 EST"
+                description: >-
+                  Message explaining API results

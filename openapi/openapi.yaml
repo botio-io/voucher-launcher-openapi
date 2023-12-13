@@ -1,6 +1,6 @@
 openapi: 3.1.0
 info:
-  version: 0.1.0
+  version: 0.1.0-beta
   title: Voucher Launcher
   #termsOfService: https://example.com/terms/
   contact:
@@ -50,12 +50,26 @@ info:
     In addition, **the request rate MUST NOT exceed 100 requests per second**.
 tags:
   - name: Voucher
-    description: Voucher operations
+    description: | 
+      Voucher operations
+
+      ## Supported Messaging Platforms
+
+      Following is a list of messaging platform supported by Voucher Launcher.
+
+      | Recipient Type | Platform | Descriptions       |
+      | -------------- | -------- | ------------------ |
+      | `botiocrm`     | `line`   | Line messaging API through Botio CRM. Botio CRM service MUST be enable for the store. |
+
 servers:
   - url: https://api.botio.io/voucher/v1
 paths:
   /vouchers:
     $ref: paths/vouchers.yaml
+  /vouchers/{voucherId}:
+    $ref: paths/vouchers_{voucherId}.yaml
+  /vouchers/{voucherId}/redeem:
+    $ref: paths/vouchers_{voucherId}_redeem.yaml
 components:
   securitySchemes:
     x-api-key:

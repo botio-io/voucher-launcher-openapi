@@ -55,16 +55,34 @@ get:
                 example: "100121"
                 description: |
                   Status code of the API call. 
-
-                  | Status Code | Decscriptions |
-                  | ----------- | ------------- |
-                  | 100121      | Subscription is expired |
-
               message:
                 type: string
                 example: "subscription was expired on Sat, 02 Dec 2023 23:30:00 EST"
                 description: >-
                   Message explaining API results
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            type: object
+            properties: 
+              success:
+                type: boolean
+                example: false
+                description: >-
+                  API call is success or not
+              code:
+                type: string
+                example: "100100"
+                description: |
+                  Status code of the API call. 
+              message:
+                type: string
+                example: "invalid API key"
+                description: >-
+                  Message explaining API results
+              
 post:
   tags:
     - Voucher
@@ -268,7 +286,6 @@ post:
                 example: "invalid API key"
                 description: >-
                   Message explaining API results
-
     '404':
       description: Not Found
       content:

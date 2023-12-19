@@ -19,22 +19,26 @@ info:
 
     # Signing API Requests
 
-    As part of request verification, every request MUST include a signature of 
-    the request body in the `x-botio-signature` header.
+    As part of request verification, every request MUST include a request timestamp 
+    in the `x-botio-timestamp` header and a signature of the request in the 
+    `x-botio-signature` header.
+
+    The timestamp in `x-botio-timestamp` is a Unix timestamp in milliseconds format 
+    containing the submitting time of the request. 
     
-    The signature is a Base64-encoded digest of the request body. This digest is 
-    generated using the HMAC-SHA256 algorithm, with the API secret serving as the 
-    secret key. The API secret is generated as part of API key and is unique to 
-    the key.
+    The signature is a Base64-encoded digest of the request body and timestamp. 
+    This digest is generated using the HMAC-SHA256 algorithm, with the API secret 
+    serving as the secret key. The API secret is generated as part of API key and 
+    is unique to the key.
 
     The following is an example of how to compute signature of the request body.
 
     ### Go
 
-    ```go Go
+    ```go 
     // Create a new HMAC-SHA256 hash
     mac := hmac.New(sha256.New, []byte(API_SECRET))
-    mac.Write([]byte(request.Body))                
+    mac.Write([]byte(request.Body + timestamp))                
     // Compute Base64 signature 
     signature := base64.StdEncoding.EncodeToString(mac.Sum(nil))
     ```
@@ -68,8 +72,6 @@ paths:
     $ref: paths/vouchers.yaml
   /vouchers/{voucherId}:
     $ref: paths/vouchers_{voucherId}.yaml
-  /vouchers/{voucherId}/redeem:
-    $ref: paths/vouchers_{voucherId}_redeem.yaml
 components:
   securitySchemes:
     x-api-key:
